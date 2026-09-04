@@ -1,0 +1,13 @@
+{
+  "name": "trajectoryai-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TrajectoryAI marketing landing page + signup. Static, no dependencies.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && npx --yes serve public -l 3000",
+    "preview": "NOINDEX=1 npm run build"
+  },
+  "engines": { "node": ">=18" }
+}

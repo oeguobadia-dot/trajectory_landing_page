@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Get early access — TrajectoryAI</title>
+<meta name="description" content="Join the TrajectoryAI beta list. A few questions, then a map as soon as we open." />
+<!--@ROBOTS@-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Zetta:wght@400&family=Lexend:wght@200;300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  /* The landing page alternates dark and light; the form is the light beat.
+     Greys are solved against white, not inverted from the dark set. */
+  --void:#ffffff; --paper:#0b0b0e;
+  --ash:#63636a;          /* 5.96:1 on white */
+  --ash-dim:#76767f;      /* 4.50:1 on white */
+  --ash-faint:#9a9aa4;    /* decorative only  */
+  --rule:#e6e6ea; --rule-lit:#c8c8d0;
+  --irid-violet:#6b4fd8; --purple:#6b4fd8;
+  --ok:#0b7d79; --warn:#9a5b06;
+  --display:'Lexend Zetta','Lexend',system-ui,sans-serif;
+  --head:'Lexend',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --gut:clamp(20px,5vw,72px); --maxw:1240px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--void);color:var(--paper);
+  font-family:var(--head);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--purple);outline-offset:3px}
+
+.grid-rules{position:fixed;inset:0;z-index:0;pointer-events:none;display:grid;
+  grid-template-columns:repeat(3,1fr);padding-inline:var(--gut);max-width:var(--maxw);margin-inline:auto}
+.grid-rules > span{border-left:1px solid var(--rule)}
+.grid-rules > span:first-child{border-left-color:transparent}
+
+.shell{position:relative;z-index:1;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ash);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:7px;height:7px;background:var(--paper);flex:none}
+.wordmark{font-family:var(--display);font-weight:400;letter-spacing:.16em;text-transform:uppercase}
+.irid-text{background:linear-gradient(96deg,var(--irid-violet),#2f5fae 34%,#0b7d79 66%,#8a6410);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.93);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav-in{max-width:var(--maxw);margin-inline:auto;padding:18px var(--gut);
+  display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav .wordmark{font-size:clamp(13px,1.5vw,16px)}
+.nav-back{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ash-dim);border-bottom:1px solid var(--rule-lit);padding-bottom:5px;
+  transition:color .3s var(--ease),border-color .3s var(--ease)}
+.nav-back:hover{color:var(--paper);border-color:var(--paper)}
+
+.page{padding-block:clamp(44px,7vw,86px) clamp(60px,9vw,120px);
+  display:grid;grid-template-columns:1fr;gap:clamp(40px,5vw,80px)}
+@media(min-width:940px){.page{grid-template-columns:.92fr 1.08fr;align-items:start}}
+
+.h1{font-family:var(--head);font-weight:200;font-size:clamp(32px,4.4vw,54px);
+  line-height:1.02;letter-spacing:-.02em;margin:26px 0 0;text-wrap:balance}
+.lede{font-size:clamp(15px,1.3vw,17px);line-height:1.62;color:var(--ash);
+  margin:24px 0 0;max-width:46ch;font-weight:300}
+.assure{list-style:none;margin:34px 0 0;padding:0;border-top:1px solid var(--rule)}
+.assure li{padding:15px 0;border-bottom:1px solid var(--rule);display:grid;
+  grid-template-columns:auto 1fr;gap:14px;align-items:start;
+  font-size:14px;line-height:1.55;color:var(--ash-dim)}
+.assure .sq{width:6px;height:6px;background:var(--ash-faint);margin-top:6px}
+
+/* ---------- form ---------- */
+.steps{display:flex;align-items:center;gap:10px;margin-bottom:30px}
+.steps b{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ash-dim);font-weight:400}
+.pip{width:22px;height:3px;background:var(--rule-lit);transition:background .5s var(--ease)}
+.pip.on{background:var(--purple)}
+
+.field{margin-bottom:28px}
+.field-k{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ash);margin-bottom:13px}
+.field-k .opt{color:var(--ash-faint);letter-spacing:.1em}
+.field input[type=email],.field input[type=text]{width:100%;background:transparent;border:0;
+  border-bottom:1px solid var(--rule-lit);padding:12px 0;font-size:16px;font-weight:300;
+  transition:border-color .3s var(--ease)}
+.field input:focus{outline:none;border-bottom-color:var(--paper)}
+.field input::placeholder{color:var(--ash-faint)}
+.field textarea{width:100%;background:transparent;border:1px solid var(--rule-lit);
+  padding:14px;font-size:15px;font-weight:300;line-height:1.55;min-height:110px;resize:vertical;
+  transition:border-color .3s var(--ease)}
+.field textarea:focus{outline:none;border-color:var(--ash)}
+.field textarea::placeholder{color:var(--ash-faint)}
+
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.o{position:relative}
+.o input{position:absolute;opacity:0;width:0;height:0}
+.o span{display:block;border:1px solid var(--rule-lit);padding:10px 14px;cursor:pointer;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);
+  transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease)}
+.o span:hover{border-color:var(--ash)}
+.o input:checked+span{border-color:var(--paper);color:var(--void);background:var(--paper)}
+.o input:focus-visible+span{outline:1px solid var(--purple);outline-offset:2px}
+
+.check{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:start;cursor:pointer;
+  padding:16px 0 0;border-top:1px solid var(--rule);margin-top:6px}
+.check input{position:absolute;opacity:0;width:0;height:0}
+.check .box{width:15px;height:15px;border:1px solid var(--rule-lit);margin-top:2px;
+  transition:background .25s var(--ease),border-color .25s var(--ease)}
+.check input:checked+.box{background:var(--purple);border-color:var(--purple)}
+.check input:focus-visible+.box{outline:1px solid var(--purple);outline-offset:2px}
+.check p{margin:0;font-size:14px;line-height:1.5;color:var(--ash)}
+
+.submit{width:100%;margin-top:12px;background:var(--paper);color:var(--void);border:0;
+  padding:17px 20px;cursor:pointer;font-family:var(--mono);font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;transition:opacity .3s var(--ease)}
+.submit:hover{opacity:.84}
+.submit:disabled{opacity:.4;cursor:not-allowed}
+.skip{display:block;width:100%;margin-top:14px;background:none;border:0;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ash-faint);transition:color .3s var(--ease)}
+.skip:hover{color:var(--ash)}
+.note{margin-top:16px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  color:var(--ash-dim);line-height:1.85}
+.msg{margin-top:16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  line-height:1.7;display:none}
+.msg.on{display:block}
+.msg.ok{color:var(--ok)} .msg.err{color:var(--warn)}
+
+.hint{margin:11px 0 0;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+  color:var(--ash-dim);display:none}
+.hint.on{display:block}
+.hint.err{color:var(--warn)}
+.field input.bad{border-bottom-color:var(--warn)}
+.hint button{background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  color:var(--purple);border-bottom:1px solid currentColor}
+
+.hide{display:none!important}
+.coppa{margin-top:14px;padding:14px 16px;border:1px solid var(--rule-lit);
+  font-size:13.5px;line-height:1.55;color:var(--ash);display:none}
+.coppa.on{display:block}
+
+.done{display:none}
+.done.on{display:block}
+.done h2{font-family:var(--head);font-weight:200;font-size:clamp(26px,3.2vw,40px);
+  line-height:1.08;letter-spacing:-.015em;margin:0 0 20px}
+
+.foot{border-top:1px solid var(--rule);padding-block:30px 40px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ash-dim);line-height:1.9}
+
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<div class="grid-rules" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="wordmark" href="/">Trajectory<span class="irid-text">AI</span></a>
+    <a class="nav-back" href="/" data-cta="back">← Back</a>
+  </div>
+</nav>
+
+<main class="shell page">
+
+  <div>
+    <div class="eyebrow">Early access</div>
+    <h1 class="h1">Make your career journey more familiar.</h1>
+    <p class="lede">We're opening in small groups so we can watch how real maps get used
+      before we scale. Your answers decide which goals we build data coverage for first.</p>
+    <ul class="assure">
+      <li><span class="sq"></span><span>We email once, when your cohort opens. Nothing else, no sharing.</span></li>
+      <li><span class="sq"></span><span>Free while in beta. No card.</span></li>
+      <li><span class="sq"></span><span>Only one question is required. Leave the email blank if you just want to answer.</span></li>
+    </ul>
+  </div>
+
+  <div>
+    <!-- ===================== STEP 1 ===================== -->
+    <form id="step1" novalidate>
+      <div class="steps">
+        <b>Step 1 of 2</b><span class="pip on"></span><span class="pip" id="pip2"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-k" for="email" id="emailLabel">Email <span class="opt">— optional</span></label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+               placeholder="you@example.com" />
+        <p class="hint" id="emailHint" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <span class="field-k">Would you actually use this?</span>
+        <div class="opts" role="group" aria-label="Would you use this">
+          <label class="o"><input type="radio" name="would_use" value="definitely" /><span>Definitely</span></label>
+          <label class="o"><input type="radio" name="would_use" value="probably" /><span>Probably</span></label>
+          <label class="o"><input type="radio" name="would_use" value="unsure" /><span>Not sure yet</span></label>
+          <label class="o"><input type="radio" name="would_use" value="probably-not" /><span>Probably not</span></label>
+          <label class="o"><input type="radio" name="would_use" value="other" id="useOther" /><span>Other</span></label>
+        </div>
+        <div id="useOtherWrap" class="hide" style="margin-top:14px">
+          <input type="text" name="would_use_other" placeholder="Tell us what you mean" />
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-k">Where are you right now?</span>
+        <div class="opts" role="group" aria-label="Where are you right now">
+          <label class="o"><input type="radio" name="stage" value="middle-school" /><span>Middle school</span></label>
+          <label class="o"><input type="radio" name="stage" value="high-school" /><span>High school</span></label>
+          <label class="o"><input type="radio" name="stage" value="college" /><span>College</span></label>
+          <label class="o"><input type="radio" name="stage" value="early-career" /><span>Early career</span></label>
+          <label class="o"><input type="radio" name="stage" value="mid-career" /><span>Mid career</span></label>
+          <label class="o"><input type="radio" name="stage" value="changing" /><span>Changing careers</span></label>
+          <label class="o"><input type="radio" name="stage" value="supporter" /><span>I support students</span></label>
+        </div>
+      </div>
+
+      <!-- shown only for school-age answers; drives the under-13 branch -->
+      <div class="field hide" id="ageField">
+        <span class="field-k">How old are you?</span>
+        <div class="opts" role="group" aria-label="Age">
+          <label class="o"><input type="radio" name="age_band" value="under-13" /><span>Under 13</span></label>
+          <label class="o"><input type="radio" name="age_band" value="13-15" /><span>13&#8211;15</span></label>
+          <label class="o"><input type="radio" name="age_band" value="16-17" /><span>16&#8211;17</span></label>
+          <label class="o"><input type="radio" name="age_band" value="18-plus" /><span>18 or older</span></label>
+        </div>
+        <div class="coppa" id="coppa">
+          Because you're under 13, we need a parent or guardian's email instead of yours.
+          Ask them first — we'll write to them, not to you.
+        </div>
+      </div>
+
+      <button type="submit" class="submit" id="btn1">Join the beta list</button>
+      <p class="note" id="note1">Email is optional. If you leave one, we write once when your cohort opens — nothing else, no sharing.</p>
+      <p class="msg" id="msg1" role="status" aria-live="polite"></p>
+    </form>
+
+    <!-- ===================== STEP 2 ===================== -->
+    <form id="step2" class="hide" novalidate>
+      <div class="steps">
+        <b>Step 2 of 2 &#183; optional</b><span class="pip on"></span><span class="pip on"></span>
+      </div>
+
+      <p class="lede" style="margin:0 0 30px">You're on the list. These are optional, and they
+        decide what we build first — the goals people actually name are the ones that get
+        data coverage.</p>
+
+      <div class="field">
+        <label class="field-k" for="goal">The goal you'd map first
+          <span class="opt">— most useful answer on this page</span></label>
+        <input id="goal" name="goal" type="text" autocomplete="off"
+               placeholder="Astronaut, ICU nurse, game developer&#8230;" />
+      </div>
+
+      <div class="field">
+        <span class="field-k">What's actually in your way right now</span>
+        <div class="opts" role="group" aria-label="What is in your way">
+          <label class="o"><input type="radio" name="blocker" value="steps" /><span>I don't know the steps</span></label>
+          <label class="o"><input type="radio" name="blocker" value="odds" /><span>I don't know my odds</span></label>
+          <label class="o"><input type="radio" name="blocker" value="cost" /><span>Cost vs. payoff</span></label>
+          <label class="o"><input type="radio" name="blocker" value="choice" /><span>Too many options</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-k">How are you figuring this out today?</span>
+        <div class="opts" role="group" aria-label="Current method">
+          <label class="o"><input type="radio" name="today" value="counselor" /><span>School counselor</span></label>
+          <label class="o"><input type="radio" name="today" value="family" /><span>Family &amp; friends</span></label>
+          <label class="o"><input type="radio" name="today" value="chatbot" /><span>ChatGPT or similar</span></label>
+          <label class="o"><input type="radio" name="today" value="social" /><span>YouTube / TikTok</span></label>
+          <label class="o"><input type="radio" name="today" value="nothing" /><span>Nothing really</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-k">Would you pay for unlimited maps?</span>
+        <div class="opts" role="group" aria-label="Willingness to pay">
+          <label class="o"><input type="radio" name="wtp" value="free-only" /><span>Free only</span></label>
+          <label class="o"><input type="radio" name="wtp" value="lt-8" /><span>Under $8/mo</span></label>
+          <label class="o"><input type="radio" name="wtp" value="8-15" /><span>$8&#8211;15/mo</span></label>
+          <label class="o"><input type="radio" name="wtp" value="school-pays" /><span>My school should pay</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="field-k">Would you recommend this to someone else?</span>
+        <div class="opts" role="group" aria-label="Would you recommend">
+          <label class="o"><input type="radio" name="recommend" value="yes" /><span>Yes</span></label>
+          <label class="o"><input type="radio" name="recommend" value="no" /><span>No</span></label>
+        </div>
+        <div class="opts" style="margin-top:12px" role="group" aria-label="Who would you send it to">
+          <label class="o"><input type="checkbox" name="send_to" value="friend" /><span>A friend</span></label>
+          <label class="o"><input type="checkbox" name="send_to" value="my-kid" /><span>My kid</span></label>
+          <label class="o"><input type="checkbox" name="send_to" value="a-student" /><span>A student of mine</span></label>
+          <label class="o"><input type="checkbox" name="send_to" value="my-parents" /><span>My parents</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-k" for="comments">Anything else?</label>
+        <textarea id="comments" name="comments"
+          placeholder="What would make this genuinely useful to you? What are we missing?"></textarea>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" name="follow_up" value="yes" />
+        <span class="box"></span>
+        <p>You can email me a few follow-up questions, or ask me to try an early version.</p>
+      </label>
+
+      <button type="submit" class="submit" id="btn2">Send these too</button>
+      <button type="button" class="skip" id="skip2">Skip — I'm done</button>
+      <p class="msg" id="msg2" role="status" aria-live="polite"></p>
+    </form>
+
+    <!-- ===================== DONE ===================== -->
+    <div class="done" id="done">
+      <div class="steps"><b>All set</b><span class="pip on"></span><span class="pip on"></span></div>
+      <h2>You're on the list.</h2>
+      <p class="lede">We'll email once your cohort opens — nothing before that. If you
+        checked the follow-up box, expect a short note before then.</p>
+      <p class="note"><a href="/" style="border-bottom:1px solid var(--rule-lit)">← Back to the map</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="shell foot">
+  TrajectoryAI, LLC · San Jose, California<br />
+  Wage and outcome data: U.S. Bureau of Labor Statistics, O*NET, NCES, IPEDS, College Scorecard, Census PSEO.
+</footer>
+
+<script>
+/* ============================================================================
+   CONFIG — same two values as the landing page, plus the Google client ID.
+   ============================================================================ */
+const CONFIG = {
+  // Deploy apps-script/Code.gs as a web app and paste its /exec URL here.
+  ENDPOINT: '' /*@ENDPOINT@*/
+};
+
+/* ---------- attribution: carried from the landing page, or captured fresh ---------- */
+const Track = (() => {
+  const KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term',
+                'fbclid','ttclid','gclid','gbraid','wbraid','li_fat_id','msclkid','twclid'];
+  const q = new URLSearchParams(location.search);
+  const get = k => { try{ return sessionStorage.getItem(k); }catch(e){ return null; } };
+  const set = (k,v) => { try{ sessionStorage.setItem(k,v); }catch(e){} };
+
+  const attribution = {};
+  KEYS.forEach(k=>{
+    const v = q.get(k);
+    if (v) set('t_'+k, v);
+    const kept = get('t_'+k);
+    if (kept) attribution[k] = kept;
+  });
+  attribution.referrer = get('t_referrer') || document.referrer || 'direct';
+  attribution.variant  = get('t_variant') || q.get('v') || 'direct';
+  attribution.cta      = q.get('cta') || null;         // which button they came from
+  attribution.segment  = q.get('segment') || null;     // audience card they picked
+
+  /* Without an email there's no key to merge step 1 and step 2 on, and two
+     blank-email rows would otherwise collapse into each other server-side. */
+  let rid = get('t_rid');
+  if (!rid){
+    rid = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+    set('t_rid', rid);
+  }
+
+  const t0 = Date.now();
+  return { attribution, snapshot: () => ({
+    respondent_id: rid,
+    ...attribution, dwell_ms: Date.now()-t0,
+    viewport: innerWidth+'x'+innerHeight, ts: new Date().toISOString()
+  })};
+})();
+
+const $ = id => document.getElementById(id);
+/* Posts to the Apps Script web app in apps-script/Code.gs, which writes the
+   row and emails it on. Sent as text/plain so the browser skips the CORS
+   preflight — Apps Script can't answer an OPTIONS request.
+
+   Apps Script answers /exec with a redirect to script.googleusercontent.com.
+   That normally carries the right CORS header, but when it doesn't the fetch
+   throws even though the request was delivered. So on failure we resend with
+   mode:'no-cors', which always reaches the server; we just can't read the
+   reply. Losing a signup is worse than not being able to confirm one. */
+const post = async (payload) => {
+  if (!CONFIG.ENDPOINT){ console.info('[TrajectoryAI] No ENDPOINT set. Payload:', payload); return; }
+  const body = JSON.stringify(payload);
+  const opts = { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body };
+  try {
+    const r = await fetch(CONFIG.ENDPOINT, opts);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+  } catch (err) {
+    console.warn('[TrajectoryAI] Readable POST failed, resending blind:', err);
+    await fetch(CONFIG.ENDPOINT, { ...opts, mode:'no-cors' });
+  }
+};
+const show = (el, text, ok) => { el.textContent = text; el.className = 'msg on ' + (ok?'ok':'err'); };
+
+/* ============================================================================
+   EMAIL NEAR-MISS
+
+   Typing is the only way in now, so one slipped keystroke is a person we can
+   never reach. This offers a fix for close misses on common domains. It only
+   ever suggests — never autocorrects — because plenty of real domains sit a
+   character or two away from these.
+   ============================================================================ */
+const DOMAINS = ['gmail.com','yahoo.com','hotmail.com','outlook.com','icloud.com',
+                 'aol.com','proton.me','protonmail.com','live.com','msn.com',
+                 'me.com','comcast.net','verizon.net','sbcglobal.net'];
+
+function lev(a, b){
+  const m = a.length, n = b.length;
+  let prev = Array.from({length:n+1}, (_,j)=>j);
+  for (let i=1;i<=m;i++){
+    const cur = [i];
+    for (let j=1;j<=n;j++){
+      cur[j] = Math.min(prev[j]+1, cur[j-1]+1, prev[j-1] + (a[i-1]===b[j-1]?0:1));
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+function nearMiss(email){
+  const at = email.lastIndexOf('@');
+  if (at < 1) return null;
+  const dom = email.slice(at+1).toLowerCase();
+  if (!dom || DOMAINS.indexOf(dom) !== -1) return null;
+  let best = null, bestD = 3;
+  for (const d of DOMAINS){
+    const x = lev(dom, d);
+    if (x < bestD){ bestD = x; best = d; }
+  }
+  return best ? email.slice(0, at+1) + best : null;
+}
+
+/* Email is optional — but a half-typed one is worse than none, because it
+   looks like a lead and isn't. So: blank passes, anything typed must parse. */
+function validEmail(v){
+  if (!/^[^\s@]+@[^\s@]+$/.test(v)) return false;
+  const at = v.lastIndexOf('@');
+  const local = v.slice(0, at), domain = v.slice(at+1);
+  if (!local || local.length > 64) return false;
+  if (domain.startsWith('.') || domain.endsWith('.') || domain.indexOf('..') !== -1) return false;
+  const labels = domain.split('.');
+  return labels.length >= 2
+      && labels.every(l => l.length > 0)
+      && labels[labels.length-1].length >= 2;
+}
+
+const emailUI = (function(){
+  const input = document.getElementById('email');
+  const hint  = document.getElementById('emailHint');
+  const btn   = document.getElementById('btn1');
+
+  function clear(){ hint.className = 'hint'; hint.textContent = ''; input.classList.remove('bad'); }
+
+  function error(msg){
+    hint.className = 'hint on err';
+    hint.textContent = msg;
+    input.classList.add('bad');
+  }
+
+  function suggest(fix){
+    hint.className = 'hint on';
+    hint.textContent = 'Did you mean ';
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = fix;
+    b.addEventListener('click', ()=>{ input.value = fix; clear(); syncBtn(); input.focus(); });
+    hint.appendChild(b);
+    hint.appendChild(document.createTextNode('?'));
+  }
+
+  // the button should never promise a list you can't be added to
+  function syncBtn(){
+    btn.textContent = input.value.trim() ? 'Join the beta list' : 'Send my answers';
+  }
+
+  function check(){
+    const v = input.value.trim();
+    if (!v) { clear(); return true; }              // blank is allowed
+    if (!validEmail(v)) { error("That isn't a valid email address."); return false; }
+    const fix = nearMiss(v);
+    if (fix) suggest(fix); else clear();
+    return true;
+  }
+
+  input.addEventListener('input', ()=>{ clear(); syncBtn(); });
+  input.addEventListener('blur', check);
+
+  // an address typed into the landing page's pill arrives here in the URL
+  const handed = new URLSearchParams(location.search).get('email');
+  if (handed){ input.value = handed.trim(); check(); }
+  syncBtn();
+  return { check, error, focus: ()=>input.focus() };
+})();
+
+/* ============================================================================
+   CONDITIONAL FIELDS
+   ============================================================================ */
+// "Other" reveals a text box
+document.querySelectorAll('input[name=would_use]').forEach(r=>{
+  r.addEventListener('change', ()=>{
+    $('useOtherWrap').classList.toggle('hide', $('useOther').checked === false);
+    if ($('useOther').checked) $('useOtherWrap').querySelector('input').focus();
+  });
+});
+
+// age band only matters for school-age answers, and under-13 changes who we write to
+document.querySelectorAll('input[name=stage]').forEach(r=>{
+  r.addEventListener('change', ()=>{
+    const schoolAge = ['middle-school','high-school'].includes(r.value);
+    $('ageField').classList.toggle('hide', !schoolAge);
+    if (!schoolAge){
+      document.querySelectorAll('input[name=age_band]').forEach(a=>a.checked=false);
+      applyAge();
+    }
+  });
+});
+function applyAge(){
+  const a = document.querySelector('input[name=age_band]:checked');
+  const under13 = a && a.value === 'under-13';
+  $('coppa').classList.toggle('on', !!under13);
+  $('emailLabel').textContent = under13 ? "Parent or guardian's email" : 'Email';
+  $('email').placeholder = under13 ? 'their.name@example.com' : 'you@example.com';
+}
+document.querySelectorAll('input[name=age_band]').forEach(r=>r.addEventListener('change', applyAge));
+
+/* ============================================================================
+   SUBMIT
+   ============================================================================ */
+let banked = null;
+
+$('step1').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData($('step1')).entries());
+  if (!emailUI.check()){
+    show($('msg1'), 'Fix the email or clear the field — either is fine, half of one is not.', false);
+    emailUI.focus(); return;
+  }
+  if (!d.stage){
+    show($('msg1'), 'Pick where you are right now — it decides which cohort you land in.', false);
+    return;
+  }
+
+  banked = { step:1, ...d, ...Track.snapshot() };
+  $('btn1').disabled = true; $('btn1').textContent = 'Sending…';
+  try{
+    await post(banked);
+    $('step1').classList.add('hide');
+    $('step2').classList.remove('hide');
+    window.scrollTo({ top:0, behavior:'smooth' });
+    if (window.fbq)  fbq('track','Lead');
+    if (window.ttq)  ttq.track('SubmitForm');
+    if (window.gtag) gtag('event','sign_up');
+  }catch(err){
+    $('btn1').disabled = false; $('btn1').textContent = 'Join the beta list';
+    show($('msg1'), "That didn't send. Check your connection and try again.", false);
+  }
+});
+
+$('step2').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const fd = new FormData($('step2'));
+  const d = Object.fromEntries(fd.entries());
+  d.send_to = fd.getAll('send_to').join('|');       // checkboxes collapse to one cell
+  $('btn2').disabled = true; $('btn2').textContent = 'Sending…';
+  try{
+    await post({ step:2, email: banked.email, ...d, ...Track.snapshot() });
+    finish();
+  }catch(err){
+    $('btn2').disabled = false; $('btn2').textContent = 'Send these too';
+    show($('msg2'), "That didn't send, but your place on the list is already saved.", false);
+  }
+});
+
+$('skip2').addEventListener('click', finish);
+function finish(){
+  if (!(banked && banked.email)){
+    $('done').querySelector('h2').textContent = 'Thanks — that\u2019s logged.';
+    $('done').querySelector('.lede').textContent =
+      "You didn't leave an email, so we can't tell you when the beta opens. " +
+      'Your answers still count toward which goals we build first.';
+  }
+  $('step2').classList.add('hide');
+  $('done').classList.add('on');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+</script>
+</body>
+</html>
