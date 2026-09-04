@@ -149,6 +149,59 @@ button,input,select,textarea{font:inherit;color:inherit}
 .done h2{font-family:var(--head);font-weight:200;font-size:clamp(26px,3.2vw,40px);
   line-height:1.08;letter-spacing:-.015em;margin:0 0 20px}
 
+/* ---------- submission processing state ---------- */
+.processing-overlay{
+  position:fixed;inset:0;z-index:100;display:none;place-items:center;
+  padding:24px;background:rgba(255,255,255,.82);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.processing-overlay.on{display:grid}
+.processing-card{
+  width:min(520px,100%);border:1px solid var(--rule-lit);border-radius:14px;
+  background:rgba(255,255,255,.98);padding:clamp(28px,5vw,46px);
+  box-shadow:0 24px 70px rgba(11,11,14,.12);text-align:left;
+}
+.processing-k{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.processing-k::before{
+  content:"";width:7px;height:7px;border-radius:50%;background:var(--purple);
+  box-shadow:0 0 0 0 rgba(107,79,216,.28);animation:processingPulse 1.5s ease-out infinite;
+}
+.processing-card h2{
+  margin:0;font-family:var(--head);font-weight:200;font-size:clamp(25px,4vw,36px);
+  line-height:1.12;letter-spacing:-.015em;
+}
+.processing-copy{margin:14px 0 0;font-size:14.5px;line-height:1.6;color:var(--ash)}
+.processing-bar{
+  position:relative;height:8px;margin-top:28px;background:var(--rule);
+  border-radius:999px;overflow:hidden;
+}
+.processing-fill{
+  position:absolute;inset:0 auto 0 0;width:8%;background:var(--purple);
+  border-radius:999px;transition:width .55s var(--ease);
+}
+.processing-meta{
+  margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash-dim);
+}
+.processing-status{min-height:1.3em}
+.processing-pct{color:var(--paper);font-variant-numeric:tabular-nums}
+.processing-wait{
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;line-height:1.7;color:var(--ash-dim);
+}
+@keyframes processingPulse{
+  0%{box-shadow:0 0 0 0 rgba(107,79,216,.30)}
+  70%{box-shadow:0 0 0 9px rgba(107,79,216,0)}
+  100%{box-shadow:0 0 0 0 rgba(107,79,216,0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .processing-k::before{animation:none}
+  .processing-fill{transition-duration:.001ms}
+}
+
 .foot{border-top:1px solid var(--rule);padding-block:30px 40px;
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ash-dim);line-height:1.9}
 
@@ -156,6 +209,22 @@ button,input,select,textarea{font:inherit;color:inherit}
 </style>
 </head>
 <body>
+
+<div class="processing-overlay" id="processingOverlay" aria-hidden="true">
+  <div class="processing-card" role="status" aria-live="polite" aria-atomic="true">
+    <div class="processing-k">TrajectoryAI is working</div>
+    <h2 id="processingTitle">Saving your answers…</h2>
+    <p class="processing-copy" id="processingCopy">Your responses are being queued securely so you can keep moving.</p>
+    <div class="processing-bar" role="progressbar" aria-label="Submission progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="8">
+      <div class="processing-fill" id="processingFill"></div>
+    </div>
+    <div class="processing-meta">
+      <span class="processing-status" id="processingStatus">Saving your answers</span>
+      <span class="processing-pct" id="processingPct">8%</span>
+    </div>
+    <div class="processing-wait">This should only take a moment.</div>
+  </div>
+</div>
 
 <div class="grid-rules" aria-hidden="true"><span></span><span></span><span></span></div>
 
@@ -382,28 +451,103 @@ const Track = (() => {
 })();
 
 const $ = id => document.getElementById(id);
-/* Posts to the Apps Script web app in apps-script/Code.gs, which writes the
-   row and emails it on. Sent as text/plain so the browser skips the CORS
-   preflight — Apps Script can't answer an OPTIONS request.
-
-   Apps Script answers /exec with a redirect to script.googleusercontent.com.
-   That normally carries the right CORS header, but when it doesn't the fetch
-   throws even though the request was delivered. So on failure we resend with
-   mode:'no-cors', which always reaches the server; we just can't read the
-   reply. Losing a signup is worse than not being able to confirm one. */
-const post = async (payload) => {
-  if (!CONFIG.ENDPOINT){ console.info('[TrajectoryAI] No ENDPOINT set. Payload:', payload); return; }
-  const body = JSON.stringify(payload);
-  const opts = { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body };
-  try {
-    const r = await fetch(CONFIG.ENDPOINT, opts);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-  } catch (err) {
-    console.warn('[TrajectoryAI] Readable POST failed, resending blind:', err);
-    await fetch(CONFIG.ENDPOINT, { ...opts, mode:'no-cors' });
+/* Queue submissions without blocking the interface on Google Apps Script.
+   sendBeacon() is preferred because it is designed for small fire-and-forget
+   payloads and can continue transmitting even if the user moves on quickly.
+   If Beacon is unavailable or refuses the payload, a keepalive no-cors fetch
+   is started in the background. Neither path makes the user wait for a server
+   response before the next screen appears. */
+const postFast = (payload) => {
+  if (!CONFIG.ENDPOINT){
+    console.info('[TrajectoryAI] No ENDPOINT set. Payload:', payload);
+    return true;
   }
+
+  const body = JSON.stringify(payload);
+
+  if (navigator.sendBeacon){
+    try{
+      const blob = new Blob([body], { type:'text/plain;charset=UTF-8' });
+      if (navigator.sendBeacon(CONFIG.ENDPOINT, blob)) return true;
+    }catch(err){
+      console.warn('[TrajectoryAI] sendBeacon unavailable for this payload:', err);
+    }
+  }
+
+  fetch(CONFIG.ENDPOINT, {
+    method:'POST',
+    mode:'no-cors',
+    keepalive:true,
+    headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+    body
+  }).catch(err => console.warn('[TrajectoryAI] Background POST failed:', err));
+
+  return true;
 };
 const show = (el, text, ok) => { el.textContent = text; el.className = 'msg on ' + (ok?'ok':'err'); };
+
+
+/* ---------- fast visible feedback while the submission is queued ---------- */
+const Processing = (() => {
+  const overlay = $('processingOverlay');
+  const fill = $('processingFill');
+  const pct = $('processingPct');
+  const status = $('processingStatus');
+  const title = $('processingTitle');
+  const copy = $('processingCopy');
+  const wait = overlay.querySelector('.processing-wait');
+  const bar = overlay.querySelector('[role=progressbar]');
+  let timers = [];
+  let current = 8;
+
+  const delay = ms => new Promise(r=>setTimeout(r, ms));
+
+  function clearTimers(){
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
+  function paint(value, text){
+    current = Math.max(current, Math.min(100, value));
+    fill.style.width = current + '%';
+    pct.textContent = Math.round(current) + '%';
+    bar.setAttribute('aria-valuenow', Math.round(current));
+    if (text) status.textContent = text;
+  }
+
+  function start(kind='answers'){
+    clearTimers();
+    current = 8;
+    title.textContent = kind === 'final' ? 'Saving your final answers…' : 'Saving your answers…';
+    copy.textContent = kind === 'final'
+      ? 'Your responses are being queued securely in the background.'
+      : 'Your responses are being queued securely so you can keep moving.';
+    wait.textContent = 'This should only take a moment.';
+    overlay.classList.add('on');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    paint(12, 'Queuing submission');
+
+    timers.push(setTimeout(()=>paint(62, 'Sending securely'), 90));
+    timers.push(setTimeout(()=>paint(88, 'Almost ready'), 210));
+  }
+
+  async function complete(message='Ready'){
+    await delay(320);
+    clearTimers();
+    paint(100, message);
+    await delay(140);
+  }
+
+  function stop(){
+    clearTimers();
+    overlay.classList.remove('on');
+    overlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  return { start, complete, stop };
+})();
 
 /* ============================================================================
    EMAIL NEAR-MISS
@@ -553,19 +697,21 @@ $('step1').addEventListener('submit', async e=>{
   }
 
   banked = { step:1, ...d, ...Track.snapshot() };
-  $('btn1').disabled = true; $('btn1').textContent = 'Sending…';
-  try{
-    await post(banked);
-    $('step1').classList.add('hide');
-    $('step2').classList.remove('hide');
-    window.scrollTo({ top:0, behavior:'smooth' });
-    if (window.fbq)  fbq('track','Lead');
-    if (window.ttq)  ttq.track('SubmitForm');
-    if (window.gtag) gtag('event','sign_up');
-  }catch(err){
-    $('btn1').disabled = false; $('btn1').textContent = 'Join the beta list';
-    show($('msg1'), "That didn't send. Check your connection and try again.", false);
-  }
+  $('btn1').disabled = true;
+  $('btn1').textContent = 'Saving…';
+  Processing.start('answers');
+
+  // Queue immediately; do not wait for the Apps Script HTTP response.
+  postFast(banked);
+  await Processing.complete('Saved — next step ready');
+  Processing.stop();
+
+  $('step1').classList.add('hide');
+  $('step2').classList.remove('hide');
+  window.scrollTo({ top:0, behavior:'smooth' });
+  if (window.fbq)  fbq('track','Lead');
+  if (window.ttq)  ttq.track('SubmitForm');
+  if (window.gtag) gtag('event','sign_up');
 });
 
 $('step2').addEventListener('submit', async e=>{
@@ -573,14 +719,15 @@ $('step2').addEventListener('submit', async e=>{
   const fd = new FormData($('step2'));
   const d = Object.fromEntries(fd.entries());
   d.send_to = fd.getAll('send_to').join('|');       // checkboxes collapse to one cell
-  $('btn2').disabled = true; $('btn2').textContent = 'Sending…';
-  try{
-    await post({ step:2, email: banked.email, ...d, ...Track.snapshot() });
-    finish();
-  }catch(err){
-    $('btn2').disabled = false; $('btn2').textContent = 'Send these too';
-    show($('msg2'), "That didn't send, but your place on the list is already saved.", false);
-  }
+  $('btn2').disabled = true;
+  $('btn2').textContent = 'Saving…';
+  Processing.start('final');
+
+  // Fire-and-forget here too; Beacon/keepalive can finish after the UI advances.
+  postFast({ step:2, email: banked && banked.email || '', ...d, ...Track.snapshot() });
+  await Processing.complete('Submission queued');
+  Processing.stop();
+  finish();
 });
 
 $('skip2').addEventListener('click', finish);
