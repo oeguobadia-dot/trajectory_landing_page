@@ -408,9 +408,9 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 .vs-col.is-us .vs-k{color:var(--accent)}
 .vs-col.is-us .vs-good{color:var(--ash);border-top-color:var(--rule-lit)}
 
-/* ---------- the journey rail: one construction line, lit by progress ---------- */
+/* ---------- the journey rail: anchored to the viewport edge, lit by progress ---------- */
 .grid-rules > span{position:relative}
-.thread{position:absolute;left:-1px;top:0;bottom:0;width:1px}
+.thread{position:fixed;left:10px;top:0;bottom:0;width:1px}
 .thread-fill{
   position:absolute;left:0;top:0;width:1px;height:100%;transform-origin:top;
   background:var(--rail);transform:scaleY(0);opacity:.62;
@@ -425,10 +425,9 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
   transition:border-color .5s var(--ease),background .5s var(--ease);
 }
 .thread-tick.on{border-color:var(--rail);background:var(--rail)}
-/* on a phone the second rule runs straight through the copy, so the rail
-   moves out to the gutter instead */
+/* keep the rail at the same viewport-edge position at every breakpoint */
 @media(max-width:759px){
-  .thread{position:fixed;left:9px;top:0;bottom:0}
+  .thread{left:8px}
 }
 
 /* ---------- reform: elements disperse and reassemble across boundaries ---------- */
@@ -526,6 +525,113 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
   .rv{opacity:1;transform:none}
   .node-g{opacity:1}
 }
+
+/* ============================================================
+   LAYOUT COHERENCE PASS
+   Keeps section edges, construction rules, and control labels
+   optically aligned across desktop, tablet, and phone widths.
+   ============================================================ */
+
+/* Give every max-width frame the same explicit width contract. */
+.shell,.nav-in,.grid-rules{
+  width:100%;
+}
+
+/* Full-bleed grounds must meet on the exact same viewport edge. */
+.light::before,.brand::before{
+  width:100dvw;
+  max-width:none;
+}
+@supports not (width:100dvw){
+  .light::before,.brand::before{width:100vw}
+}
+
+/* Draw section separators full-bleed too. This removes the small end-caps/
+   apparent step at color boundaries that a max-width border can create. */
+.sec,.join{border-top:0}
+.sec::after,.join::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:50%;
+  width:100dvw;
+  height:1px;
+  transform:translateX(-50%);
+  background:var(--rule);
+  pointer-events:none;
+  z-index:1;
+}
+@supports not (width:100dvw){
+  .sec::after,.join::after{width:100vw}
+}
+
+/* Keep copy away from column dividers and make the readout spacing symmetric. */
+@media(min-width:860px){
+  .ro-cell{padding-right:clamp(20px,3vw,38px)}
+  .ro-cell:last-child{padding-right:0}
+}
+
+/* Optical centering for every true button/CTA label. Explicit line-height avoids
+   font-metric differences from making uppercase labels look high or low. */
+.nav-cta,.btn-solid,.submit,.pill button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.15;
+}
+.submit{display:flex}
+.pill button{min-height:49px}
+@media(max-width:480px){
+  .pill button{min-height:46px}
+}
+
+/* More predictable wrapping makes headline/copy blocks look centered within
+   their own measure without changing the page's intentionally left-aligned type. */
+.h1,.h2,.h3,.ask-quote,.aud-q,.vs-lead{ text-wrap:balance }
+.body,.aud-b,.vs-b,.vs-good,.faq .ans,.feat-item p{ text-wrap:pretty }
+
+/* Prevent tiny intrinsic-width differences at card breakpoints. */
+.aud-card,.vs-col,.ro-cell,.feat-item{min-width:0}
+
+/* Mobile nav needs equal vertical centering even when the wordmark wraps/falls
+   back to a system font while webfonts are loading. */
+@media(max-width:480px){
+  .nav-in{min-height:64px}
+  .nav .wordmark{line-height:1.2}
+  .nav-cta{min-height:38px;padding-block:9px}
+}
+
+/* Rounded geometry: keep the technical layout, but soften every actual box. */
+:root{
+  --radius-box:12px;
+  --radius-control:8px;
+  --radius-chip:6px;
+}
+.map-frame,.feat-device{
+  border-radius:var(--radius-box);
+  overflow:hidden;
+}
+.nav-cta,.btn-solid,.submit,.opt span{
+  border-radius:var(--radius-control);
+}
+.pill{
+  border-radius:var(--radius-control);
+  overflow:hidden;
+}
+.ro-src{border-radius:var(--radius-chip)}
+.brand .vs-col.is-us{
+  border:1px solid var(--rule-lit);
+  border-radius:var(--radius-box);
+  padding:clamp(28px,3.4vw,42px) clamp(24px,2.6vw,34px);
+}
+@media(min-width:900px){
+  .brand .vs-col.is-us{
+    padding:clamp(28px,3.4vw,42px) clamp(24px,2.6vw,34px);
+    border:1px solid var(--rule-lit);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1455,7 +1561,7 @@ const Track = (() => {
   paint();
 })();
 
-/* The rail: the second construction line of the grid, lit by how far you've come.
+/* The rail: pinned to the left edge of the viewport and lit by how far you've come.
    Each section gets a tick, and ticks light as you pass them. */
 (function rail(){
   const fill = document.getElementById('threadFill');
