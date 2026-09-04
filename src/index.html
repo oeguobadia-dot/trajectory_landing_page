@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>TrajectoryAI — Make your career journey more familiar</title>
+<title>TrajectoryAI — See the path to the career you want</title>
 <meta name="description" content="See the whole route to any career before you walk it — the steps, the years, the wages. Every number cited to a federal source." />
 <!--@ROBOTS@-->
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Make your career journey more familiar" />
+<meta property="og:title" content="See the path to the career you want" />
 <meta property="og:description" content="See the whole route to any career before you walk it — the steps, the years, the wages. Every number cited to a federal source." />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -208,37 +208,93 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 }
 
 /* ---------- hero ---------- */
-.hero{padding-top:clamp(24px,3.6vw,44px);padding-bottom:clamp(18px,3vw,34px)}
-.hero-eyebrow{margin-bottom:clamp(22px,3.2vw,34px)}
+.hero{position:relative;isolation:isolate;padding-top:clamp(24px,3.6vw,44px);padding-bottom:clamp(18px,3vw,34px);overflow:hidden}
+.hero-eyebrow{position:relative;z-index:2;margin-bottom:clamp(22px,3.2vw,34px)}
 .hero .h1{max-width:16ch}
 .hero-sub{margin-top:clamp(22px,3vw,34px)}
-.hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(28px,4vw,48px)}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:clamp(28px,4vw,48px)}
 @media(min-width:960px){
   .hero-grid{grid-template-columns:1.55fr 1fr;align-items:end}
 }
 
-/* the ask — inline capture */
-.ask{border-top:1px solid var(--rule);padding-top:22px}
-.ask-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);margin-bottom:14px}
-/* the sample case is shown, not typed — it's a specimen, not a field */
-.ask-quote{
-  margin:0 0 22px;padding:0 0 0 20px;position:relative;
-  font-family:var(--head);font-weight:200;
-  font-size:clamp(19px,2.05vw,24px);line-height:1.32;letter-spacing:-.01em;
-  color:var(--paper);text-wrap:balance;
+/* the ask — centered question inside a spider-web / word-cloud stage */
+.ask{
+  position:relative;border-top:1px solid var(--rule);padding-top:22px;
 }
-.ask-quote::before{
-  content:"";position:absolute;left:0;top:.42em;
-  width:7px;height:7px;background:var(--accent);
+.ask-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ash);margin-bottom:14px
 }
-.btn-solid{
-  display:inline-block;background:var(--paper);color:var(--void);border:0;
-  padding:14px clamp(20px,2.6vw,30px);cursor:pointer;
-  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  transition:opacity .3s var(--ease);
+.ask-stage{
+  position:relative;min-height:clamp(360px,38vw,470px);border:1px solid var(--rule-lit);
+  border-radius:var(--radius-box);overflow:hidden;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,.04) 0, rgba(255,255,255,.015) 18%, transparent 46%),
+    linear-gradient(180deg, rgba(255,255,255,.018), rgba(255,255,255,.008));
+  isolation:isolate;
 }
-.btn-solid:hover{opacity:.84}
-.ask-note{margin-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--ash-dim);line-height:1.7}
+.ask-stage::before{
+  content:"";position:absolute;inset:0;
+  background:repeating-conic-gradient(from -2deg at 50% 50%, rgba(255,255,255,.12) 0deg .85deg, transparent .85deg 45deg);
+  opacity:.34;
+  mask:radial-gradient(circle at center, transparent 0 92px, #000 92px);
+  -webkit-mask:radial-gradient(circle at center, transparent 0 92px, #000 92px);
+}
+.ask-stage::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at center,
+      transparent 0 94px,
+      rgba(255,255,255,.18) 94px 95px,
+      transparent 95px 150px,
+      rgba(255,255,255,.11) 150px 151px,
+      transparent 151px 206px,
+      rgba(255,255,255,.08) 206px 207px,
+      transparent 207px);
+  opacity:.9;
+}
+.ask-cloud{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.ask-lane{
+  position:absolute;left:0;right:0;height:1.55em;overflow:visible;
+  display:flex;align-items:center;white-space:nowrap;
+}
+.ask-lane span{
+  position:absolute;left:0;top:50%;display:block;width:max-content;max-width:none;
+  transform:translate3d(0,-50%,0);will-change:transform;
+  color:var(--ash);font-family:var(--head);font-weight:300;font-style:italic;
+  line-height:1;letter-spacing:-.012em;text-align:left;white-space:nowrap;user-select:none;
+  text-shadow:0 0 18px rgba(0,0,0,.35);
+}
+.ask-lane .long{font-size:clamp(12px,1vw,15px);opacity:.48}
+.ask-lane .medium{font-size:clamp(14px,1.18vw,17px);opacity:.62}
+.ask-lane .punch{font-size:clamp(17px,1.55vw,22px);opacity:.92;color:var(--paper);font-weight:300}
+.ask-lane:nth-child(3n) span{font-style:normal}
+.ask-main{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;
+  width:min(80%, 390px);margin:0;padding:28px 26px;border:1px solid var(--rule-lit);
+  border-radius:28px;background:rgba(0,0,0,.93);box-shadow:0 18px 50px rgba(0,0,0,.35);
+  font-family:var(--head);font-weight:200;font-size:clamp(21px,2vw,27px);line-height:1.32;
+  letter-spacing:-.015em;color:var(--paper);text-align:center;text-wrap:balance;font-style:italic;
+}
+.ask-main::before{
+  content:"";position:absolute;inset:auto auto -13px 50%;transform:translateX(-50%);
+  width:12px;height:12px;border-radius:50%;border:1px solid var(--rule-lit);background:rgba(255,255,255,.08)
+}
+.ask-main::after{
+  content:"";position:absolute;inset:auto auto -27px 50%;transform:translateX(-50%);
+  width:6px;height:6px;border-radius:50%;border:1px solid var(--rule);background:rgba(255,255,255,.04)
+}
+.ask-foot{
+  display:flex;justify-content:center;margin-top:14px
+}
+@media(max-width:959px){
+  .ask-stage{min-height:390px}
+  .ask-main{width:min(84%, 380px);padding:24px 22px}
+}
+@media(max-width:639px){
+  .ask-stage{min-height:420px}
+  .ask-main{width:min(88%, 340px);font-size:clamp(20px,6vw,24px)}
+}
 
 /* ============================================================
    SIGNATURE — the wing-graph.
@@ -632,6 +688,43 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
   }
 }
 
+/* Clarity + conversion additions: explicit trust signals and repeated next steps. */
+.secondary-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:15px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--paper);border-bottom:1px solid var(--rule-lit);padding-bottom:5px;
+  transition:color .25s var(--ease),border-color .25s var(--ease);
+}
+.secondary-cta:hover{color:var(--accent);border-color:var(--accent)}
+.trust-strip{
+  display:grid;grid-template-columns:1fr;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  margin-top:clamp(24px,3vw,36px);
+}
+.trust-item{
+  min-width:0;padding:16px 0;display:flex;flex-direction:column;gap:6px;
+  font-size:13px;line-height:1.45;color:var(--ash);
+}
+.trust-item+.trust-item{border-top:1px solid var(--rule)}
+.trust-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
+@media(min-width:860px){
+  .trust-strip{grid-template-columns:repeat(3,1fr)}
+  .trust-item{padding:18px clamp(18px,2.2vw,30px)}
+  .trust-item:first-child{padding-left:0}
+  .trust-item:last-child{padding-right:0}
+  .trust-item+.trust-item{border-top:0;border-left:1px solid var(--rule)}
+}
+.section-cta{
+  margin-top:clamp(42px,6vw,76px);padding:clamp(24px,3vw,34px);
+  border:1px solid var(--rule-lit);border-radius:var(--radius-box);
+  display:flex;flex-direction:column;gap:22px;align-items:flex-start;justify-content:space-between;
+}
+.section-cta p{margin:10px 0 0;max-width:60ch;font-size:14.5px;line-height:1.6;color:var(--ash)}
+.section-cta .btn-solid{flex:none}
+.inline-link{border-bottom:1px solid currentColor;padding-bottom:2px}
+@media(min-width:760px){
+  .section-cta{flex-direction:row;align-items:center}
+}
+
 </style>
 </head>
 <body>
@@ -648,7 +741,7 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <nav class="nav">
   <div class="nav-in">
     <div class="wordmark">Trajectory<span class="irid-text">AI</span></div>
-    <button class="nav-cta" data-cta="nav">Get early access</button>
+    <button class="nav-cta" data-cta="nav">Join the beta</button>
   </div>
 </nav>
 
@@ -688,36 +781,41 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 
 <!-- ============ HERO ============ -->
 <header class="shell hero">
-  <div class="eyebrow hero-eyebrow">Career trajectory mapping</div>
+  <div class="eyebrow hero-eyebrow">Career planning grounded in federal data</div>
 
   <div class="hero-grid">
     <div>
-      <h1 class="h1" id="headline">Make your career journey more familiar.</h1>
+      <h1 class="h1" id="headline">See the path from where you are now to the career you want.</h1>
       <p class="body hero-sub" id="subhead">
-        Name any career and see the whole route to it — the courses, the credentials,
-        the jobs in between, the years each one takes.
-        <strong>Every number traces to a federal source you can open and check.</strong>
+        TrajectoryAI turns your current grade, education, or work experience into a step-by-step
+        career map — what to learn, which credentials matter, the jobs along the way, how long
+        each stage takes, what it pays, and the alternate routes that stay open.
+        <strong>Every published figure links back to a federal source you can open and check.</strong>
       </p>
     </div>
 
     <div class="ask">
-      <div class="ask-label">The question the map below answers</div>
-      <blockquote class="ask-quote">
-        I'm in 8th grade and I want to be an astronaut.
-      </blockquote>
-<form class="pill" data-pill data-cta="hero" action="/signup" method="get" novalidate>
-        <input type="email" name="email" inputmode="email" autocomplete="email"
-               placeholder="you@example.com" aria-label="Email (optional)" />
-        <button type="submit">Get early access</button>
-      </form>
-      <p class="ask-note">Email optional · Free while in beta · No card</p>
+      <div class="ask-label">See it on a real example</div>
+      <div class="ask-stage">
+        <div class="ask-cloud" id="askCloud" aria-hidden="true"></div>
+        <blockquote class="ask-main">
+          &ldquo;How can I become an Astronaut at NASA from where I AM today?&rdquo;
+        </blockquote>
+      </div>
+      <div class="ask-foot"><a class="secondary-cta" href="#map">See the astronaut map ↓</a></div>
     </div>
   </div>
 </header>
 
+<section class="shell trust-strip" aria-label="TrajectoryAI data trust signals">
+  <div class="trust-item"><span class="trust-k">Sources</span><span>BLS · O*NET · NCES · IPEDS</span></div>
+  <div class="trust-item"><span class="trust-k">Verified</span><span>Every published figure shows its source and vintage</span></div>
+  <div class="trust-item"><span class="trust-k">No guessing</span><span>If a figure cannot be retrieved, the map leaves it blank</span></div>
+</section>
+
 <!-- ============ THE MAP (real product output) ============ -->
 <section class="shell wing" id="map" aria-label="A real trajectory map produced by the product">
-  <div class="wing-tag br">A real map, built by the product<span class="swipe-hint"> · swipe to read</span></div>
+  <div class="wing-tag br">Real product output · NASA astronaut example<span class="swipe-hint"> · swipe to read</span></div>
 
   <div class="map-frame">
     <div class="map-scroll" id="mapScroll">
@@ -753,8 +851,8 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <section class="shell sec light" id="provenance">
   <div class="prov">
     <div>
-      <div class="eyebrow" style="margin-bottom:clamp(20px,3vw,34px)">Where the numbers come from</div>
-      <h2 class="h2" data-words>Other tools guess. We cite, or we say nothing.</h2>
+      <div class="eyebrow" style="margin-bottom:clamp(20px,3vw,34px)">Why you can trust the numbers</div>
+      <h2 class="h2" data-words>Every number comes with the source. If we can't verify it, we leave it blank.</h2>
       <p class="body" style="margin-top:clamp(20px,2.6vw,30px)">
         Every part of a map carries a tag saying what kind of thing it is.
         <strong>Data</strong> is a figure from a public federal table, with its vintage and a link.
@@ -809,32 +907,31 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <!-- ============ WHAT YOU GET (sticky scroller) ============ -->
 <section class="shell sec light" id="inside">
   <div class="sec-head">
-    <div class="eyebrow">What a map contains</div>
-    <h2 class="h2">Not a personality quiz.<br />A route with distances on it.</h2>
+    <div class="eyebrow">What you get in every career map</div>
+    <h2 class="h2">Know what to do next, what it will take, and which other paths stay open.</h2>
   </div>
 
   <div class="feat">
     <ol class="feat-list" id="featList">
       <li class="feat-item on" data-i="0">
-        <b>Know what comes first</b>
-        <p>Courses, credentials, exams, and the jobs people actually hold on the way. Each one
-          lists what it needs before you can start it.</p>
+        <b>Know your next step — not just your end goal</b>
+        <p>See the courses, credentials, exams, and stepping-stone jobs in order, with the
+          prerequisites for each one so you know what to act on next.</p>
       </li>
       <li class="feat-item" data-i="1">
-        <b>See where else it could take you</b>
-        <p>Most people who train for a goal land somewhere adjacent. The map draws those
-          off-ramps instead of pretending there's one door.</p>
+        <b>See backup routes before you need them</b>
+        <p>Career plans change. The map shows adjacent roles and off-ramps your training can lead to,
+          so one change does not make the work you already did feel wasted.</p>
       </li>
       <li class="feat-item" data-i="2">
-        <b>Know what it pays where you live</b>
-        <p>Wages move more by geography than by title. Pick a state and the figure changes
-          — or reads as unavailable, if the table has nothing for it.</p>
+        <b>Compare pay and opportunity where you live</b>
+        <p>Switch from national figures to state-level data where available, so the decision reflects
+          the market you may actually enter rather than a generic national average.</p>
       </li>
       <li class="feat-item" data-i="3">
-        <b>Decide between careers on the same rows</b>
-        <p>Not sure between two or three? Line them up on the same rows — what each pays
-          today, whether it's growing, the school you'd need, the year you could start,
-          what school usually costs, and what a normal day is like.</p>
+        <b>Compare careers without opening ten tabs</b>
+        <p>Put two or three careers on the same scorecard and compare pay, growth, education,
+          time to entry, typical costs, and day-to-day work in one view.</p>
       </li>
     </ol>
 
@@ -896,37 +993,41 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
              Handbook (May 2025 wages, 2025–35 projections). Rows with no cited
              source stay blank rather than being filled with plausible numbers. -->
         <svg class="fp" viewBox="0 0 320 240" data-i="3" role="img" aria-label="Three careers compared on the same rows with federal figures">
-          <g font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1.1" fill="#fff">
-            <text x="112" y="28">AEROSPACE ENG.</text><text x="196" y="28">PHYSICIAN</text><text x="262" y="28">PILOT</text>
+          <!-- Balanced scorecard geometry: 20px outer inset on both sides, a fixed
+               label column, and three equally spaced centered career columns. -->
+          <g font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1.05" fill="#fff" text-anchor="middle">
+            <text x="133" y="28">AEROSPACE ENG.</text><text x="200" y="28">PHYSICIAN</text><text x="267" y="28">PILOT</text>
           </g>
           <g font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="1" fill="#9a9aa4">
-            <text x="24" y="57">PAY TODAY</text><text x="24" y="83">GROWING?</text>
-            <text x="24" y="109">SCHOOL NEEDED</text><text x="24" y="135">YOU COULD START</text>
-            <text x="24" y="161">TYPICAL DEBT</text><text x="24" y="187">A NORMAL DAY</text>
+            <text x="20" y="57">PAY TODAY</text><text x="20" y="83">GROWING?</text>
+            <text x="20" y="109">SCHOOL NEEDED</text><text x="20" y="135">YOU COULD START</text>
+            <text x="20" y="161">TYPICAL DEBT</text><text x="20" y="187">A NORMAL DAY</text>
           </g>
-          <g stroke="#2a2a33"><line x1="24" y1="66" x2="304" y2="66"/><line x1="24" y1="92" x2="304" y2="92"/>
-            <line x1="24" y1="118" x2="304" y2="118"/><line x1="24" y1="144" x2="304" y2="144"/><line x1="24" y1="170" x2="304" y2="170"/></g>
-
-          <g font-family="Lexend, sans-serif" font-weight="300" font-size="9.5" fill="#fff">
-            <text x="112" y="58">$134,960</text><text x="196" y="58">$275,930</text><text x="262" y="58">$232,140</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing="1" fill="#fff">
-            <text x="112" y="84">+8%</text><text x="196" y="84">+4%</text><text x="262" y="84">+7%</text>
-            <text x="112" y="110">BACHELOR'S</text><text x="196" y="110">DOCTORAL</text><text x="262" y="110">BACHELOR'S</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing="1" fill="#c9c9d1">
-            <text x="112" y="136">IN 8 YRS</text><text x="196" y="136">IN 15+ YRS</text><text x="262" y="136">IN 9 YRS</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="7.5" fill="#5c5c68">
-            <text x="112" y="162">—</text><text x="196" y="162">—</text><text x="262" y="162">—</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing=".8" fill="#c9c9d1">
-            <text x="112" y="188">40+ HRS</text><text x="196" y="188">LONG SHIFTS</text><text x="262" y="188" fill="#5c5c68">—</text>
+          <g stroke="#2a2a33">
+            <line x1="20" y1="66" x2="300" y2="66"/><line x1="20" y1="92" x2="300" y2="92"/>
+            <line x1="20" y1="118" x2="300" y2="118"/><line x1="20" y1="144" x2="300" y2="144"/><line x1="20" y1="170" x2="300" y2="170"/>
           </g>
 
-          <g font-family="JetBrains Mono, monospace" font-size="6" letter-spacing=".8" fill="#9a9aa4">
-            <rect x="24" y="203" width="4" height="4" fill="#35d6d0"/><text x="32" y="207">DATA · BLS OOH · MAY 2025 WAGES · 2025–35 GROWTH</text>
-            <rect x="24" y="212" width="4" height="4" fill="#9a9aa4"/><text x="32" y="216">COMPUTED · TYPICAL EDUCATION, 8TH-GRADE START</text>
+          <g font-family="Lexend, sans-serif" font-weight="300" font-size="9.5" fill="#fff" text-anchor="middle">
+            <text x="133" y="58">$134,960</text><text x="200" y="58">$275,930</text><text x="267" y="58">$232,140</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing=".85" fill="#fff" text-anchor="middle">
+            <text x="133" y="84">+8%</text><text x="200" y="84">+4%</text><text x="267" y="84">+7%</text>
+            <text x="133" y="110">BACHELOR'S</text><text x="200" y="110">DOCTORAL</text><text x="267" y="110">BACHELOR'S</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing=".85" fill="#c9c9d1" text-anchor="middle">
+            <text x="133" y="136">IN 8 YRS</text><text x="200" y="136">IN 15+ YRS</text><text x="267" y="136">IN 9 YRS</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="7.5" fill="#5c5c68" text-anchor="middle">
+            <text x="133" y="162">—</text><text x="200" y="162">—</text><text x="267" y="162">—</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing=".65" fill="#c9c9d1" text-anchor="middle">
+            <text x="133" y="188">40+ HRS</text><text x="200" y="188">LONG SHIFTS</text><text x="267" y="188" fill="#5c5c68">—</text>
+          </g>
+
+          <g font-family="JetBrains Mono, monospace" font-size="6" letter-spacing=".72" fill="#9a9aa4">
+            <rect x="20" y="203" width="4" height="4" rx="1" fill="#35d6d0"/><text x="30" y="207">DATA · BLS OOH · MAY 2025 WAGES · 2025–35 GROWTH</text>
+            <rect x="20" y="212" width="4" height="4" rx="1" fill="#9a9aa4"/><text x="30" y="216">COMPUTED · TYPICAL EDUCATION, 8TH-GRADE START</text>
           </g>
         </svg>
 
@@ -936,13 +1037,20 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
       </div>
     </div>
   </div>
+  <div class="section-cta">
+    <div>
+      <div class="mono">Want a map built around your starting point?</div>
+      <p>Join the beta now, or keep scrolling to see how TrajectoryAI fits students, parents, and counselors.</p>
+    </div>
+    <a class="btn-solid" href="/signup" data-cta="inside">Join the beta</a>
+  </div>
 </section>
 
 <!-- ============ AUDIENCE (segment capture) ============ -->
 <section class="shell sec light" id="who">
   <div class="sec-head">
-    <div class="eyebrow">Who this is for</div>
-    <h2 class="h2">Pick the one that sounds like you.</h2>
+    <div class="eyebrow">Who uses a career map</div>
+    <h2 class="h2">Start from the decision you are trying to make right now.</h2>
   </div>
 
   <div class="aud rv">
@@ -973,8 +1081,8 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <!-- ============ WHY THIS AND NOT THAT ============ -->
 <section class="shell sec brand" id="different">
   <div class="sec-head">
-    <div class="eyebrow">Before you sign up</div>
-    <h2 class="h2" data-words>Why not just ask a chatbot? Or a counselor?</h2>
+    <div class="eyebrow">Why TrajectoryAI exists</div>
+    <h2 class="h2" data-words>Career advice needs judgment. Career decisions also need numbers you can verify.</h2>
   </div>
 
   <div class="vs">
@@ -1085,20 +1193,20 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <section class="shell join brand" id="join">
   <div class="join-grid">
     <div>
-      <div class="eyebrow" style="margin-bottom:26px">Early access</div>
-      <h2 class="h2">Two questions.<br />Then a map, as soon as we open.</h2>
+      <div class="eyebrow" style="margin-bottom:26px">Join the beta</div>
+      <h2 class="h2">Start with where you are.<br />We'll map what comes next.</h2>
       <p class="body" style="margin-top:26px">
-        We're opening in small groups so we can watch how real maps get used before we
-        scale. What you tell us decides which goals we build data coverage for first.
+        Join the beta and answer two short questions about where you are now and where you want
+        to go. We are opening in small groups while we expand career and data coverage.
       </p>
       <div style="margin-top:34px"><form class="pill" data-pill data-cta="join" action="/signup" method="get" novalidate>
         <input type="email" name="email" inputmode="email" autocomplete="email"
                placeholder="you@example.com" aria-label="Email (optional)" />
-        <button type="submit">Get early access</button>
+        <button type="submit">Join the beta</button>
       </form></div>
       <p class="mono" style="margin-top:26px;line-height:2;text-transform:none;letter-spacing:.06em">
         Free while in beta · No card<br />
-        Beta cohorts run in San Jose, CA<br />
+        <a href="#map" class="inline-link">See the NASA astronaut example</a><br />
         Questions → hello@trajectory.ai
       </p>
     </div>
@@ -1111,7 +1219,7 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <footer class="shell foot">
   <div>
     <div class="wordmark">Trajectory<span class="irid-text">AI</span></div>
-    <div class="foot-tag">Make your career journey more familiar.</div>
+    <div class="foot-tag">See the path from where you are now to where you want to go.</div>
   </div>
   <div class="foot-meta">
     Figures from public federal sources: BLS OEWS and Employment Projections, NCES/IPEDS, O*NET, DOL H-1B disclosures, AAMC/ABA/NSF.<br />
@@ -1653,6 +1761,195 @@ document.querySelectorAll('[data-cta]').forEach(btn=>{
     goSignup(where, btn.dataset.segment || null);
   });
 });
+
+
+
+/* ============================================================================
+   9 — LIVE QUESTION LINES.
+   Questions move smoothly in both directions across horizontal reading lanes.
+   Each prompt stays on one line. Short, high-impact prompts are larger and
+   brighter; longer prompts recede slightly. The center card simply sits above
+   the lanes, so text can pass behind it with no collision or snapping logic.
+   ============================================================================ */
+(function flowingQuestionLines(){
+  const cloud = document.getElementById('askCloud');
+  if (!cloud) return;
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const QUESTIONS = [
+    { text:'What do I do next?', kind:'punch' },
+    { text:'Am I on the right path?', kind:'punch' },
+    { text:'Am I already behind?', kind:'punch' },
+    { text:'What should I major in?', kind:'punch' },
+    { text:'What classes should I take?', kind:'punch' },
+    { text:'How long will this take?', kind:'punch' },
+    { text:'What will it cost?', kind:'punch' },
+    { text:'What does it pay?', kind:'punch' },
+    { text:'Can I still switch?', kind:'punch' },
+    { text:'What jobs come first?', kind:'punch' },
+    { text:'Do I need grad school?', kind:'punch' },
+    { text:'Can I get there from here?', kind:'punch' },
+    { text:'What if I change my mind?', kind:'punch' },
+    { text:'Where do I start?', kind:'punch' },
+    { text:'What am I missing?', kind:'punch' },
+    { text:'Is this realistic for me?', kind:'punch' },
+    { text:'What should I learn first?', kind:'punch' },
+    { text:'Which route is fastest?', kind:'punch' },
+    { text:'Which route is safest?', kind:'punch' },
+    { text:'What if I fail?', kind:'punch' },
+    { text:'Is it too late to pivot?', kind:'punch' },
+    { text:'What can I do this year?', kind:'punch' },
+    { text:'What should my first job be?', kind:'punch' },
+    { text:'Which path gives me the most options?', kind:'medium' },
+    { text:'What internships would move me closer?', kind:'medium' },
+    { text:'Could I get there from community college?', kind:'medium' },
+    { text:'What degree keeps this path open?', kind:'medium' },
+    { text:'What skills from my current job actually transfer?', kind:'medium' },
+    { text:'If I switch now, when could I realistically start?', kind:'medium' },
+    { text:'How do I change careers without starting over?', kind:'medium' },
+    { text:'What other careers would this path prepare me for?', kind:'medium' },
+    { text:'Which high school classes actually matter for this career?', kind:'medium' },
+    { text:'What can I do before I graduate to get ahead?', kind:'medium' },
+    { text:'Which college experiences matter outside the classroom?', kind:'medium' },
+    { text:'Would changing my major put me too far behind?', kind:'medium' },
+    { text:'What can I build now that employers will actually care about?', kind:'medium' },
+    { text:'Which certifications are actually worth the time?', kind:'medium' },
+    { text:'What salary could I realistically reach after switching?', kind:'medium' },
+    { text:'Can I transition without taking on another degree?', kind:'medium' },
+    { text:'Which parts of my experience give me a head start?', kind:'medium' },
+    { text:'I know where I want to end up. What do I actually need to do next?', kind:'long' },
+    { text:'I want to become an astronaut. What happens between here and there?', kind:'long' },
+    { text:'What would I have to do, starting today, to become a NASA astronaut?', kind:'long' },
+    { text:'If I started today, how long would it take me to become a NASA astronaut?', kind:'long' },
+    { text:'If I want to become a NASA astronaut, what does the path from where I am today actually look like?', kind:'long' },
+    { text:'What does this career pay, and what does it cost to get there?', kind:'long' },
+    { text:'What jobs come first if the final goal is still years away?', kind:'long' },
+    { text:'What if I am already in college and realize I want something different?', kind:'long' },
+    { text:'How do I move into a new field without throwing away the experience I already have?', kind:'long' }
+  ];
+
+  let lanes = [];
+  let raf = 0;
+  let last = 0;
+  let resizeTimer = 0;
+  let sequence = 0;
+
+  const shuffled = () => {
+    const a = QUESTIONS.slice();
+    for (let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  };
+  let queue = shuffled();
+
+  function nextQuestion(){
+    if (!queue.length) queue = shuffled();
+    return queue.shift();
+  }
+
+  function laneCount(){
+    if (innerWidth < 520) return 9;
+    if (innerWidth < 760) return 10;
+    if (innerWidth < 1080) return 11;
+    return 13;
+  }
+
+  function speedFor(kind, index){
+    const base = kind === 'punch' ? 27 : kind === 'medium' ? 24 : 21.5;
+    return base + (index % 4) * 1.15;
+  }
+
+  function setQuestion(lane, q, initial=false){
+    lane.q = q;
+    lane.el.className = q.kind;
+    lane.el.textContent = q.text;
+    const width = lane.el.getBoundingClientRect().width;
+    lane.w = width;
+    lane.speed = speedFor(q.kind, lane.index);
+    const stageW = cloud.clientWidth;
+    const gap = q.kind === 'punch' ? 70 : 110;
+
+    if (initial){
+      // Populate the stage immediately, regardless of travel direction.
+      lane.x = -lane.w * .25 + Math.random() * (stageW + lane.w * .35);
+    } else if (lane.dir < 0){
+      // Right -> left: re-enter from just beyond the right edge.
+      lane.x = stageW + gap + Math.random()*120;
+    } else {
+      // Left -> right: re-enter from just beyond the left edge.
+      lane.x = -lane.w - gap - Math.random()*120;
+    }
+    sequence++;
+  }
+
+  function build(){
+    cancelAnimationFrame(raf);
+    raf = 0;
+    last = 0;
+    cloud.innerHTML = '';
+    lanes = [];
+
+    const count = laneCount();
+    const h = cloud.clientHeight;
+    const topPad = innerWidth < 640 ? 34 : 28;
+    const bottomPad = innerWidth < 640 ? 34 : 28;
+    const usable = Math.max(1, h - topPad - bottomPad);
+
+    for (let i=0;i<count;i++){
+      const lane = document.createElement('div');
+      lane.className = 'ask-lane';
+      lane.style.top = (topPad + usable * (i/(count-1 || 1))) + 'px';
+      const text = document.createElement('span');
+      lane.appendChild(text);
+      cloud.appendChild(lane);
+      const state = {
+        lane, el:text, index:i, x:0, w:0, speed:24, q:null,
+        dir: i % 2 === 0 ? -1 : 1
+      };
+      lanes.push(state);
+      setQuestion(state, nextQuestion(), true);
+    }
+
+    // The initial x positions are already distributed across the stage.
+    lanes.forEach(lane=>{
+      lane.el.style.transform = `translate3d(${lane.x}px,-50%,0)`;
+    });
+
+    if (reduced.matches) return;
+
+    function frame(ts){
+      if (!last) last = ts;
+      const dt = Math.min(40, ts-last) / 1000;
+      last = ts;
+
+      const stageW = cloud.clientWidth;
+      lanes.forEach(lane=>{
+        lane.x += lane.dir * lane.speed * dt;
+
+        if (lane.dir < 0 && lane.x + lane.w < -36){
+          setQuestion(lane, nextQuestion(), false);
+        } else if (lane.dir > 0 && lane.x > stageW + 36){
+          setQuestion(lane, nextQuestion(), false);
+        }
+
+        lane.el.style.transform = `translate3d(${lane.x}px,-50%,0)`;
+      });
+      raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function queueBuild(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(build, 140);
+  }
+
+  build();
+  addEventListener('resize', queueBuild, { passive:true });
+  reduced.addEventListener?.('change', build);
+})();
 
 </script>
 </body>
