@@ -225,7 +225,7 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
   margin:0 0 22px;padding:0 0 0 20px;position:relative;
   font-family:var(--head);font-weight:200;
   font-size:clamp(19px,2.05vw,24px);line-height:1.32;letter-spacing:-.01em;
-  color:var(--paper);text-wrap:balance;
+  color:var(--paper);text-wrap:balance;font-style:italic;
 }
 .ask-quote::before{
   content:"";position:absolute;left:0;top:.42em;
@@ -703,7 +703,7 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
     <div class="ask">
       <div class="ask-label">The question the map below answers</div>
       <blockquote class="ask-quote">
-        I'm in 8th grade and I want to be an astronaut.
+        &ldquo;How can I become an Astronaut at NASA from where I AM today?&rdquo;
       </blockquote>
 <form class="pill" data-pill data-cta="hero" action="/signup" method="get" novalidate>
         <input type="email" name="email" inputmode="email" autocomplete="email"
@@ -896,37 +896,41 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
              Handbook (May 2025 wages, 2025–35 projections). Rows with no cited
              source stay blank rather than being filled with plausible numbers. -->
         <svg class="fp" viewBox="0 0 320 240" data-i="3" role="img" aria-label="Three careers compared on the same rows with federal figures">
-          <g font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1.1" fill="#fff">
-            <text x="112" y="28">AEROSPACE ENG.</text><text x="196" y="28">PHYSICIAN</text><text x="262" y="28">PILOT</text>
+          <!-- Balanced scorecard geometry: 20px outer inset on both sides, a fixed
+               label column, and three equally spaced centered career columns. -->
+          <g font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1.05" fill="#fff" text-anchor="middle">
+            <text x="133" y="28">AEROSPACE ENG.</text><text x="200" y="28">PHYSICIAN</text><text x="267" y="28">PILOT</text>
           </g>
           <g font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing="1" fill="#9a9aa4">
-            <text x="24" y="57">PAY TODAY</text><text x="24" y="83">GROWING?</text>
-            <text x="24" y="109">SCHOOL NEEDED</text><text x="24" y="135">YOU COULD START</text>
-            <text x="24" y="161">TYPICAL DEBT</text><text x="24" y="187">A NORMAL DAY</text>
+            <text x="20" y="57">PAY TODAY</text><text x="20" y="83">GROWING?</text>
+            <text x="20" y="109">SCHOOL NEEDED</text><text x="20" y="135">YOU COULD START</text>
+            <text x="20" y="161">TYPICAL DEBT</text><text x="20" y="187">A NORMAL DAY</text>
           </g>
-          <g stroke="#2a2a33"><line x1="24" y1="66" x2="304" y2="66"/><line x1="24" y1="92" x2="304" y2="92"/>
-            <line x1="24" y1="118" x2="304" y2="118"/><line x1="24" y1="144" x2="304" y2="144"/><line x1="24" y1="170" x2="304" y2="170"/></g>
-
-          <g font-family="Lexend, sans-serif" font-weight="300" font-size="9.5" fill="#fff">
-            <text x="112" y="58">$134,960</text><text x="196" y="58">$275,930</text><text x="262" y="58">$232,140</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing="1" fill="#fff">
-            <text x="112" y="84">+8%</text><text x="196" y="84">+4%</text><text x="262" y="84">+7%</text>
-            <text x="112" y="110">BACHELOR'S</text><text x="196" y="110">DOCTORAL</text><text x="262" y="110">BACHELOR'S</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing="1" fill="#c9c9d1">
-            <text x="112" y="136">IN 8 YRS</text><text x="196" y="136">IN 15+ YRS</text><text x="262" y="136">IN 9 YRS</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="7.5" fill="#5c5c68">
-            <text x="112" y="162">—</text><text x="196" y="162">—</text><text x="262" y="162">—</text>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing=".8" fill="#c9c9d1">
-            <text x="112" y="188">40+ HRS</text><text x="196" y="188">LONG SHIFTS</text><text x="262" y="188" fill="#5c5c68">—</text>
+          <g stroke="#2a2a33">
+            <line x1="20" y1="66" x2="300" y2="66"/><line x1="20" y1="92" x2="300" y2="92"/>
+            <line x1="20" y1="118" x2="300" y2="118"/><line x1="20" y1="144" x2="300" y2="144"/><line x1="20" y1="170" x2="300" y2="170"/>
           </g>
 
-          <g font-family="JetBrains Mono, monospace" font-size="6" letter-spacing=".8" fill="#9a9aa4">
-            <rect x="24" y="203" width="4" height="4" fill="#35d6d0"/><text x="32" y="207">DATA · BLS OOH · MAY 2025 WAGES · 2025–35 GROWTH</text>
-            <rect x="24" y="212" width="4" height="4" fill="#9a9aa4"/><text x="32" y="216">COMPUTED · TYPICAL EDUCATION, 8TH-GRADE START</text>
+          <g font-family="Lexend, sans-serif" font-weight="300" font-size="9.5" fill="#fff" text-anchor="middle">
+            <text x="133" y="58">$134,960</text><text x="200" y="58">$275,930</text><text x="267" y="58">$232,140</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing=".85" fill="#fff" text-anchor="middle">
+            <text x="133" y="84">+8%</text><text x="200" y="84">+4%</text><text x="267" y="84">+7%</text>
+            <text x="133" y="110">BACHELOR'S</text><text x="200" y="110">DOCTORAL</text><text x="267" y="110">BACHELOR'S</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing=".85" fill="#c9c9d1" text-anchor="middle">
+            <text x="133" y="136">IN 8 YRS</text><text x="200" y="136">IN 15+ YRS</text><text x="267" y="136">IN 9 YRS</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="7.5" fill="#5c5c68" text-anchor="middle">
+            <text x="133" y="162">—</text><text x="200" y="162">—</text><text x="267" y="162">—</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="6.5" letter-spacing=".65" fill="#c9c9d1" text-anchor="middle">
+            <text x="133" y="188">40+ HRS</text><text x="200" y="188">LONG SHIFTS</text><text x="267" y="188" fill="#5c5c68">—</text>
+          </g>
+
+          <g font-family="JetBrains Mono, monospace" font-size="6" letter-spacing=".72" fill="#9a9aa4">
+            <rect x="20" y="203" width="4" height="4" rx="1" fill="#35d6d0"/><text x="30" y="207">DATA · BLS OOH · MAY 2025 WAGES · 2025–35 GROWTH</text>
+            <rect x="20" y="212" width="4" height="4" rx="1" fill="#9a9aa4"/><text x="30" y="216">COMPUTED · TYPICAL EDUCATION, 8TH-GRADE START</text>
           </g>
         </svg>
 
