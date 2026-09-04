@@ -490,29 +490,48 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 /* ---------- reform: elements disperse and reassemble across boundaries ---------- */
 .rf{will-change:transform,opacity}
 
-/* ---------- FAQ, after Cleanmeter's accordion ---------- */
+/* ---------- FAQ: single-open animated accordion ---------- */
 .faq-sec{display:grid;grid-template-columns:1fr;gap:clamp(22px,3vw,38px)}
 @media(min-width:960px){.faq-sec{grid-template-columns:.9fr 1.4fr;align-items:start}}
-/* a question and its toggle need to stay visibly paired, so the list gets a
-   measure instead of spanning the full page width */
 .faq{border-top:1px solid var(--rule);margin-top:clamp(34px,4.5vw,58px)}
-.faq details{border-bottom:1px solid var(--rule)}
+.faq details{
+  border-bottom:1px solid var(--rule);overflow:hidden;height:auto;
+  transition:height .30s var(--ease),background .30s var(--ease),border-color .30s var(--ease);
+}
 .faq summary{
   list-style:none;cursor:pointer;padding:22px 0;
   display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;
   font-family:var(--head);font-weight:300;font-size:clamp(16px,1.7vw,20px);
-  letter-spacing:-.005em;transition:color .3s var(--ease);
+  letter-spacing:-.005em;
+  transition:color .28s var(--ease),padding .30s var(--ease),transform .30s var(--ease);
 }
 .faq summary::-webkit-details-marker{display:none}
-.faq summary:hover{color:var(--ash)}
-.faq .plus{position:relative;width:13px;height:13px;flex:none}
-.faq .plus::before,.faq .plus::after{content:"";position:absolute;background:var(--ash);
-  transition:transform .4s var(--ease),background .4s var(--ease)}
-.faq .plus::before{left:0;top:6px;width:13px;height:1px}
-.faq .plus::after{top:0;left:6px;width:1px;height:13px}
-.faq details[open] .plus::after{transform:rotate(90deg)}
-.faq details[open] .plus::before,.faq details[open] .plus::after{background:var(--accent)}
-.faq .ans{padding:0 0 26px;max-width:62ch;font-size:15px;line-height:1.62;color:var(--ash)}
+.faq summary:hover{color:#fff;transform:translateX(4px)}
+.faq details[open] summary{color:#fff;padding-bottom:16px}
+.faq .plus{position:relative;width:15px;height:15px;flex:none}
+.faq .plus::before,.faq .plus::after{
+  content:"";position:absolute;background:var(--ash);border-radius:1px;
+  transition:transform .32s var(--ease),background .32s var(--ease),opacity .32s var(--ease)
+}
+.faq .plus::before{left:0;top:7px;width:15px;height:1px}
+.faq .plus::after{top:0;left:7px;width:1px;height:15px}
+.faq details[open]:not(.is-closing) .plus::after{transform:rotate(90deg);opacity:0}
+.faq details[open]:not(.is-closing) .plus::before{background:#fff}
+.faq details.is-closing .plus::before,.faq details.is-closing .plus::after{background:var(--ash)}
+.faq .ans{
+  max-width:none;margin:0 0 18px;padding:20px clamp(18px,2.2vw,28px) 22px;
+  border:1px solid rgba(255,255,255,.14);border-radius:var(--radius-box);
+  background:rgba(12,8,35,.30);box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+  font-size:15px;line-height:1.68;color:rgba(255,255,255,.84);
+  opacity:0;transform:translateY(-10px) scale(.992);
+  transition:opacity .30s var(--ease),transform .34s var(--ease),background .30s var(--ease);
+}
+.faq details[open]:not(.is-closing) .ans{opacity:1;transform:none;background:rgba(12,8,35,.42)}
+.faq details.is-closing .ans{opacity:0;transform:translateY(-7px) scale(.995)}
+@media(max-width:639px){
+  .faq summary{padding-block:19px;gap:18px}
+  .faq .ans{padding:18px;margin-bottom:14px}
+}
 
 /* ---------- word-by-word reveal, after Cleanmeter's manifesto block ---------- */
 [data-words] .w{display:inline-block;transition:opacity .1s linear}
@@ -1545,6 +1564,86 @@ const Track = (() => {
 /* ============================================================================
    5 — INTERACTIONS
    ============================================================================ */
+/* FAQ accordion — exactly one answer may be open at a time. */
+(function faqAccordion(){
+  const faq = document.querySelector('.faq');
+  if (!faq) return;
+
+  const items = [...faq.querySelectorAll('details')];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let busy = false;
+
+  // Guard against an author accidentally shipping more than one item open.
+  let foundOpen = false;
+  items.forEach(d => {
+    if (!d.open) return;
+    if (foundOpen) d.open = false;
+    foundOpen = true;
+  });
+
+  const wait = (el, ms) => new Promise(resolve => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      el.removeEventListener('transitionend', onEnd);
+      resolve();
+    };
+    const onEnd = e => { if (e.propertyName === 'height') finish(); };
+    el.addEventListener('transitionend', onEnd);
+    setTimeout(finish, ms);
+  });
+
+  async function closeItem(d){
+    if (!d.open) return;
+    if (reduced){ d.open = false; return; }
+
+    d.classList.add('is-closing');
+    d.style.height = d.scrollHeight + 'px';
+    d.offsetHeight; // lock the current rendered height before collapsing
+    const summaryH = d.querySelector('summary').offsetHeight;
+    requestAnimationFrame(() => { d.style.height = summaryH + 'px'; });
+    await wait(d, 360);
+    d.open = false;
+    d.classList.remove('is-closing');
+    d.style.height = '';
+  }
+
+  async function openItem(d){
+    if (d.open) return;
+    if (reduced){ d.open = true; return; }
+
+    const summary = d.querySelector('summary');
+    const startH = summary.offsetHeight;
+    d.style.height = startH + 'px';
+    d.open = true;
+    const endH = d.scrollHeight;
+    d.offsetHeight;
+    requestAnimationFrame(() => { d.style.height = endH + 'px'; });
+    await wait(d, 380);
+    d.style.height = 'auto';
+  }
+
+  items.forEach(d => {
+    const summary = d.querySelector('summary');
+    summary.addEventListener('click', async e => {
+      e.preventDefault();
+      if (busy) return;
+      busy = true;
+
+      if (d.open){
+        await closeItem(d);
+      } else {
+        const current = items.find(x => x !== d && x.open);
+        if (current) await closeItem(current);
+        await openItem(d);
+      }
+
+      busy = false;
+    });
+  });
+})();
+
 /* Continuous reform. Every marked element carries its own scroll progress, so
    as one section leaves the frame its parts drift apart and fade while the next
    section's parts converge into place — the page reshapes rather than sliding.
