@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>TrajectoryAI — Make your career journey more familiar</title>
+<title>TrajectoryAI — See the path to the career you want</title>
 <meta name="description" content="See the whole route to any career before you walk it — the steps, the years, the wages. Every number cited to a federal source." />
 <!--@ROBOTS@-->
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Make your career journey more familiar" />
+<meta property="og:title" content="See the path to the career you want" />
 <meta property="og:description" content="See the whole route to any career before you walk it — the steps, the years, the wages. Every number cited to a federal source." />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -632,6 +632,43 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
   }
 }
 
+/* Clarity + conversion additions: explicit trust signals and repeated next steps. */
+.secondary-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:15px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--paper);border-bottom:1px solid var(--rule-lit);padding-bottom:5px;
+  transition:color .25s var(--ease),border-color .25s var(--ease);
+}
+.secondary-cta:hover{color:var(--accent);border-color:var(--accent)}
+.trust-strip{
+  display:grid;grid-template-columns:1fr;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  margin-top:clamp(24px,3vw,36px);
+}
+.trust-item{
+  min-width:0;padding:16px 0;display:flex;flex-direction:column;gap:6px;
+  font-size:13px;line-height:1.45;color:var(--ash);
+}
+.trust-item+.trust-item{border-top:1px solid var(--rule)}
+.trust-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
+@media(min-width:860px){
+  .trust-strip{grid-template-columns:repeat(3,1fr)}
+  .trust-item{padding:18px clamp(18px,2.2vw,30px)}
+  .trust-item:first-child{padding-left:0}
+  .trust-item:last-child{padding-right:0}
+  .trust-item+.trust-item{border-top:0;border-left:1px solid var(--rule)}
+}
+.section-cta{
+  margin-top:clamp(42px,6vw,76px);padding:clamp(24px,3vw,34px);
+  border:1px solid var(--rule-lit);border-radius:var(--radius-box);
+  display:flex;flex-direction:column;gap:22px;align-items:flex-start;justify-content:space-between;
+}
+.section-cta p{margin:10px 0 0;max-width:60ch;font-size:14.5px;line-height:1.6;color:var(--ash)}
+.section-cta .btn-solid{flex:none}
+.inline-link{border-bottom:1px solid currentColor;padding-bottom:2px}
+@media(min-width:760px){
+  .section-cta{flex-direction:row;align-items:center}
+}
+
 </style>
 </head>
 <body>
@@ -648,7 +685,7 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <nav class="nav">
   <div class="nav-in">
     <div class="wordmark">Trajectory<span class="irid-text">AI</span></div>
-    <button class="nav-cta" data-cta="nav">Get early access</button>
+    <button class="nav-cta" data-cta="nav">Join the beta</button>
   </div>
 </nav>
 
@@ -688,36 +725,44 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 
 <!-- ============ HERO ============ -->
 <header class="shell hero">
-  <div class="eyebrow hero-eyebrow">Career trajectory mapping</div>
+  <div class="eyebrow hero-eyebrow">Career planning grounded in federal data</div>
 
   <div class="hero-grid">
     <div>
-      <h1 class="h1" id="headline">Make your career journey more familiar.</h1>
+      <h1 class="h1" id="headline">See the path from where you are now to the career you want.</h1>
       <p class="body hero-sub" id="subhead">
-        Name any career and see the whole route to it — the courses, the credentials,
-        the jobs in between, the years each one takes.
-        <strong>Every number traces to a federal source you can open and check.</strong>
+        TrajectoryAI turns your current grade, education, or work experience into a step-by-step
+        career map — what to learn, which credentials matter, the jobs along the way, how long
+        each stage takes, what it pays, and the alternate routes that stay open.
+        <strong>Every published figure links back to a federal source you can open and check.</strong>
       </p>
     </div>
 
     <div class="ask">
-      <div class="ask-label">The question the map below answers</div>
+      <div class="ask-label">See it on a real example</div>
       <blockquote class="ask-quote">
         &ldquo;How can I become an Astronaut at NASA from where I AM today?&rdquo;
       </blockquote>
 <form class="pill" data-pill data-cta="hero" action="/signup" method="get" novalidate>
         <input type="email" name="email" inputmode="email" autocomplete="email"
                placeholder="you@example.com" aria-label="Email (optional)" />
-        <button type="submit">Get early access</button>
+        <button type="submit">Join the beta</button>
       </form>
       <p class="ask-note">Email optional · Free while in beta · No card</p>
+      <a class="secondary-cta" href="#map">See the astronaut map ↓</a>
     </div>
   </div>
 </header>
 
+<section class="shell trust-strip" aria-label="TrajectoryAI data trust signals">
+  <div class="trust-item"><span class="trust-k">Sources</span><span>BLS · O*NET · NCES · IPEDS</span></div>
+  <div class="trust-item"><span class="trust-k">Verified</span><span>Every published figure shows its source and vintage</span></div>
+  <div class="trust-item"><span class="trust-k">No guessing</span><span>If a figure cannot be retrieved, the map leaves it blank</span></div>
+</section>
+
 <!-- ============ THE MAP (real product output) ============ -->
 <section class="shell wing" id="map" aria-label="A real trajectory map produced by the product">
-  <div class="wing-tag br">A real map, built by the product<span class="swipe-hint"> · swipe to read</span></div>
+  <div class="wing-tag br">Real product output · NASA astronaut example<span class="swipe-hint"> · swipe to read</span></div>
 
   <div class="map-frame">
     <div class="map-scroll" id="mapScroll">
@@ -753,8 +798,8 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <section class="shell sec light" id="provenance">
   <div class="prov">
     <div>
-      <div class="eyebrow" style="margin-bottom:clamp(20px,3vw,34px)">Where the numbers come from</div>
-      <h2 class="h2" data-words>Other tools guess. We cite, or we say nothing.</h2>
+      <div class="eyebrow" style="margin-bottom:clamp(20px,3vw,34px)">Why you can trust the numbers</div>
+      <h2 class="h2" data-words>Every number comes with the source. If we can't verify it, we leave it blank.</h2>
       <p class="body" style="margin-top:clamp(20px,2.6vw,30px)">
         Every part of a map carries a tag saying what kind of thing it is.
         <strong>Data</strong> is a figure from a public federal table, with its vintage and a link.
@@ -809,32 +854,31 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <!-- ============ WHAT YOU GET (sticky scroller) ============ -->
 <section class="shell sec light" id="inside">
   <div class="sec-head">
-    <div class="eyebrow">What a map contains</div>
-    <h2 class="h2">Not a personality quiz.<br />A route with distances on it.</h2>
+    <div class="eyebrow">What you get in every career map</div>
+    <h2 class="h2">Know what to do next, what it will take, and which other paths stay open.</h2>
   </div>
 
   <div class="feat">
     <ol class="feat-list" id="featList">
       <li class="feat-item on" data-i="0">
-        <b>Know what comes first</b>
-        <p>Courses, credentials, exams, and the jobs people actually hold on the way. Each one
-          lists what it needs before you can start it.</p>
+        <b>Know your next step — not just your end goal</b>
+        <p>See the courses, credentials, exams, and stepping-stone jobs in order, with the
+          prerequisites for each one so you know what to act on next.</p>
       </li>
       <li class="feat-item" data-i="1">
-        <b>See where else it could take you</b>
-        <p>Most people who train for a goal land somewhere adjacent. The map draws those
-          off-ramps instead of pretending there's one door.</p>
+        <b>See backup routes before you need them</b>
+        <p>Career plans change. The map shows adjacent roles and off-ramps your training can lead to,
+          so one change does not make the work you already did feel wasted.</p>
       </li>
       <li class="feat-item" data-i="2">
-        <b>Know what it pays where you live</b>
-        <p>Wages move more by geography than by title. Pick a state and the figure changes
-          — or reads as unavailable, if the table has nothing for it.</p>
+        <b>Compare pay and opportunity where you live</b>
+        <p>Switch from national figures to state-level data where available, so the decision reflects
+          the market you may actually enter rather than a generic national average.</p>
       </li>
       <li class="feat-item" data-i="3">
-        <b>Decide between careers on the same rows</b>
-        <p>Not sure between two or three? Line them up on the same rows — what each pays
-          today, whether it's growing, the school you'd need, the year you could start,
-          what school usually costs, and what a normal day is like.</p>
+        <b>Compare careers without opening ten tabs</b>
+        <p>Put two or three careers on the same scorecard and compare pay, growth, education,
+          time to entry, typical costs, and day-to-day work in one view.</p>
       </li>
     </ol>
 
@@ -940,13 +984,20 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
       </div>
     </div>
   </div>
+  <div class="section-cta">
+    <div>
+      <div class="mono">Want a map built around your starting point?</div>
+      <p>Join the beta now, or keep scrolling to see how TrajectoryAI fits students, parents, and counselors.</p>
+    </div>
+    <a class="btn-solid" href="/signup" data-cta="inside">Join the beta</a>
+  </div>
 </section>
 
 <!-- ============ AUDIENCE (segment capture) ============ -->
 <section class="shell sec light" id="who">
   <div class="sec-head">
-    <div class="eyebrow">Who this is for</div>
-    <h2 class="h2">Pick the one that sounds like you.</h2>
+    <div class="eyebrow">Who uses a career map</div>
+    <h2 class="h2">Start from the decision you are trying to make right now.</h2>
   </div>
 
   <div class="aud rv">
@@ -977,8 +1028,8 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <!-- ============ WHY THIS AND NOT THAT ============ -->
 <section class="shell sec brand" id="different">
   <div class="sec-head">
-    <div class="eyebrow">Before you sign up</div>
-    <h2 class="h2" data-words>Why not just ask a chatbot? Or a counselor?</h2>
+    <div class="eyebrow">Why TrajectoryAI exists</div>
+    <h2 class="h2" data-words>Career advice needs judgment. Career decisions also need numbers you can verify.</h2>
   </div>
 
   <div class="vs">
@@ -1089,20 +1140,20 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <section class="shell join brand" id="join">
   <div class="join-grid">
     <div>
-      <div class="eyebrow" style="margin-bottom:26px">Early access</div>
-      <h2 class="h2">Two questions.<br />Then a map, as soon as we open.</h2>
+      <div class="eyebrow" style="margin-bottom:26px">Join the beta</div>
+      <h2 class="h2">Start with where you are.<br />We'll map what comes next.</h2>
       <p class="body" style="margin-top:26px">
-        We're opening in small groups so we can watch how real maps get used before we
-        scale. What you tell us decides which goals we build data coverage for first.
+        Join the beta and answer two short questions about where you are now and where you want
+        to go. We are opening in small groups while we expand career and data coverage.
       </p>
       <div style="margin-top:34px"><form class="pill" data-pill data-cta="join" action="/signup" method="get" novalidate>
         <input type="email" name="email" inputmode="email" autocomplete="email"
                placeholder="you@example.com" aria-label="Email (optional)" />
-        <button type="submit">Get early access</button>
+        <button type="submit">Join the beta</button>
       </form></div>
       <p class="mono" style="margin-top:26px;line-height:2;text-transform:none;letter-spacing:.06em">
         Free while in beta · No card<br />
-        Beta cohorts run in San Jose, CA<br />
+        <a href="#map" class="inline-link">See the NASA astronaut example</a><br />
         Questions → hello@trajectory.ai
       </p>
     </div>
@@ -1115,7 +1166,7 @@ body.over-brand .thread-head{box-shadow:0 0 14px rgba(255,255,255,.6)}
 <footer class="shell foot">
   <div>
     <div class="wordmark">Trajectory<span class="irid-text">AI</span></div>
-    <div class="foot-tag">Make your career journey more familiar.</div>
+    <div class="foot-tag">See the path from where you are now to where you want to go.</div>
   </div>
   <div class="foot-meta">
     Figures from public federal sources: BLS OEWS and Employment Projections, NCES/IPEDS, O*NET, DOL H-1B disclosures, AAMC/ABA/NSF.<br />
